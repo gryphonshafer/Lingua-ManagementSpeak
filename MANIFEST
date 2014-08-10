@@ -1,0 +1,11 @@
+Changes
+lib/Lingua/ManagementSpeak.pm
+Makefile.PL
+MANIFEST
+README
+t/00-load.t
+t/boilerplate.t
+t/library.t
+t/manifest.t
+t/pod-coverage.t
+t/pod.t
