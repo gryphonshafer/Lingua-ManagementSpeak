@@ -1,6 +1,8 @@
 Revision history for Lingua::ManagementSpeak
 
 {{$NEXT}}
+
+1.02      2015-01-29 13:33:00-08:00 America/Los_Angeles
         - Refactoring away some old, lengthy if/else clauses
 
 1.01      2015-01-29 10:34:06-08:00 America/Los_Angeles
