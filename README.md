@@ -12,7 +12,7 @@ version 0.03
 # SYNOPSIS
 
     use Lingua::ManagementSpeak;
-    my $ms = new Lingua::ManagementSpeak;
+    my $ms = Lingua::ManagementSpeak->new;
 
     print $ms->words(
         'pronoun article sub_conjunc power_word verb aux_verb adjective ' .
@@ -35,8 +35,8 @@ version 0.03
     print join(', ', $ms->structure);
     print join(', ', $ms->structure(3, 3, 5));
 
-    my $body = $ms->body;
-    my $body = $ms->body({
+    my $body_default = $ms->body;
+    my $body_custom  = $ms->body({
         p_min   => 2,
         p_max   => 4,
         p_s_min => 1,
@@ -46,8 +46,8 @@ version 0.03
         b_max   => 6
     });
 
-    my $document = $ms->document;
-    my $document = $ms->document(
+    my $document_default = $ms->document;
+    my $document_custom  = $ms->document(
         [ 1, 2, 2, 1, 2 ],
         {
             p_min   => 1,
@@ -60,15 +60,24 @@ version 0.03
         }
     );
 
-    print $ms->to_html($document);
+    print $ms->to_html($document_custom);
 
 # DESCRIPTION
 
-This module generates grammatically correct, managerial-sounding text and
-full-length documents that mean absolutely nothing. It can output sentences,
+This module generates (probably) grammatically correct, managerial-sounding text
+and full-length documents that mean absolutely nothing. It can output sentences,
 paragraphs, and whole documents with embedded structure. The goal is to easily
 provide filler or lorem ipsen content that has the potential to pass as real.
 This module does for geeks what lorem ipsen does for designers.
+
+Most common cases are the need to create whole documents or just a paragraph
+with a few sentences.
+
+    $ms->document;
+    $ms->paragraph;
+
+This being said, there are methods that let you hook in at just about any
+useful level between word and document.
 
 # METHODS
 
@@ -77,13 +86,13 @@ several other methods internally and returns a randomly generated document
 based on some good defaults. However, you can tap into the process at
 a variety of levels.
 
-## new()
+## new
 
 Simple instantiator. Nothing special.
 
     my $ms = Lingua::ManagementSpeak->new;
 
-## words()
+## words
 
 Using a text string of meta words, this returns a management-speak
 block of text. It parses the meta string and converts each meta word into
@@ -164,7 +173,7 @@ extra text into the meta string and it will come through as expected:
     print $ms->words('I need you to verb the adjective noun.');
     # Might return: "I need you to expedite the customized interfaces."
 
-## sentence()
+## sentence
 
 This returns a fully-formed sentence randomly selected from a set of
 pre-defined patterns. It accepts a true or false input. If true, the returned
@@ -179,7 +188,7 @@ there is a 1/4 change of a leading conjunctive adverb.
     # Might return:
     #   "Consequently, our mindshare engages open-source architectures."
 
-## paragraph()
+## paragraph
 
 This returns a paragraph with a certain number of constructed sentences.
 It accepts either two or one integers. If passed two, it returns a paragraph
@@ -192,7 +201,7 @@ passed, it returns between 4 and 7 sentences.
     print $ms->paragraph(2);    # Returns 2 sentences.
     print $ms->paragraph(2, 5); # Returns between 2 and 5 sentences.
 
-## paragraphs()
+## paragraphs
 
 This returns a set of paragraphs. You can optionally supply a number of
 paragraphs to return and sentence parameters like sentence count per
@@ -214,7 +223,7 @@ paragraph or a range for sentence count.
     # Returns two paragraphs, each with between one and three sentences
     my @paragraphs5 = $ms->paragraphs(2, 1, 3);
 
-## bullets()
+## bullets
 
 This returns a certain number of bullet items, either defined or random.
 The elements within each set of bullets will be written in parallel
@@ -227,7 +236,7 @@ There are no periods at the end of each bullet. If you want your bulletted
 lists to have periods, you have to add them yourself; but you shouldn't,
 because periods at the end of bullet items are dumb.
 
-## body()
+## body
 
 This will build a "body" chunk that you might find inside any given section
 of a document. It will only ever contain paragraphs and bulletted lists.
@@ -273,7 +282,7 @@ The data structure of `$ref_to_array` might look something like this:
         }
     ]
 
-## header()
+## header
 
 This returns a correctly formatted (meaning most words will appear in
 upper-case) text string for use as a header. It accepts a single whole number
@@ -284,7 +293,7 @@ If no integer is given, it will randomly pick a number between 5 and 1.
     my $header = $ms->header(3);
     # Might return: "Monetizing Distributed Partnerships"
 
-## structure()
+## structure
 
 This returns an array of numbers, each number representing a "heading level"
 for a document structure. The purpose of this method is to build what could
@@ -297,7 +306,7 @@ pass for a real document's information architecture.
 parent level. `$depth_limit` is how deep the levels are allowed to nest.
 `$minimum_length` is, well, the minimum length.
 
-## document()
+## document
 
 This is my favorite function. It builds a complete document with a structure
 and body sections containing paragraphs and bulletted lists.
@@ -336,7 +345,7 @@ The data structure of `$ref_to_array1` might look something like this:
         }
     ]
 
-## to\_html()
+## to\_html
 
 This accepts either a `body()` or `document()` result and converts it into
 mostly good HTML. By mostly, I mean that you could probably parse it with
@@ -348,38 +357,6 @@ some simple regexes, but it ain't gonna validate against the W3C.
 I tossed this in here because I use this functionality a lot. If you want to
 build real web pages, you should probably use something better than this
 function.
-
-# EXAMPLES
-
-This will dump out 100 sentences into a single block. Originally this module
-was a script that just did this only, and I'd cut-and-paste the text into
-the various locations I needed it.
-
-    use Text::Wrap;
-    use Lingua::ManagementSpeak;
-
-    $Text::Wrap::columns = 78;
-    my $ms = new Lingua::ManagementSpeak;
-    print wrap('', '', $ms->paragraph(100));
-
-The following will create a simplistic HTML document that contains a full
-document-length document. (Er... I mean, it will look like a real document.)
-It definately won't create beautiful HTML, but it's useful when you need to
-write a spec and put it on your bosses desk in 20 seconds.
-
-    use CGI qw(header);
-    use Lingua::ManagementSpeak;
-
-    print header;
-    my $ms = new Lingua::ManagementSpeak;
-    my $document = $ms->document;
-
-    print
-        '<html><head><title>',
-        $document->[0]{text},
-        "</title>\n</head><body>\n",
-        wrap('', '', $ms->to_html($document)),
-        "</body></html>\n";
 
 # SEE ALSO
 

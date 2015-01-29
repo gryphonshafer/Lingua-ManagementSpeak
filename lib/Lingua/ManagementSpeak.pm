@@ -8,17 +8,19 @@ use warnings;
 
 sub new {
     my $self = shift;
-    return bless({
-        pronouns => [qw(I we they)],
-        articles => [qw(the your my our this its)],
+    return bless( {
+        pronouns      => [ qw( I we they ) ],
+        articles      => [ qw( the your my our its ) ],
+        conj_adverbs  => [ qw( however moreover nevertheless consequently ) ],
+        conjuntors    => [ 'though', 'although', 'notwithstanding that', 'yet', 'still' ],
         sub_conjuncs  => [
             'after', 'although', 'as', 'as if', 'as long as', 'as though', 'because',
             'before', 'even if', 'even though', 'if', 'if only', 'in order that',
-            'now that', 'once', 'rather than', 'since', 'so that', 'though',
+            'now that', 'once', 'since', 'so that', 'though',
             'unless', 'until', 'when', 'whenever', 'where', 'whereas', 'wherever',
             'while'
         ],
-        power_words  => [qw(
+        power_words => [ qw(
             accomplished dealt implemented projected achieved debated improved
             promoted acquired decided included proofed adjusted defined increased
             purchased administered delegated indicated qualified advised delivered
@@ -44,24 +46,24 @@ sub new {
             tested corrected greeted prepared trained corresponded guided presented
             translated counseled handled processed treated created helped produced
             updated critiqued identified programmed wrote
-        )],
-        verbs        => [qw(
+        ) ],
+        verbs => [ qw(
             aggregate architect benchmark brand cultivate deliver deploy
             disintermediate drive e-enable embrace empower enable engage engineer
             enhance envision evolve expedite exploit extend facilitate generate grow
-            harness implement incentivize incubate innovate integrate iterate
+            implement incentivize incubate innovate integrate iterate
             leverage maximize mesh monetize morph optimize orchestrate
             recontextualize reintermediate reinvent repurpose revolutionize scale
             seize strategize streamline syndicate synergize synthesize target
             transform transition unleash utilize visualize whiteboard
-        )],
-        aux_verbs    => [
+        ) ],
+        aux_verbs => [
             'will', 'shall', 'may', 'might', 'can', 'could', 'must',
             'ought to', 'should', 'would', 'need to'
         ],
-        adjectives   => [qw(
+        adjectives => [ qw (
             24/365 24/7 B2B B2C back-end best-of-breed bleeding-edge
-            bricks-and-clicks clicks-and-mortar collaborative compelling
+            bricks-and-click clicks-and-mortar collaborative compelling
             cross-platform cross-media customized cutting-edge
             distributed dot-com dynamic e-business efficient
             end-to-end enterprise extensible frictionless front-end
@@ -72,236 +74,249 @@ sub new {
             transparent turn-key ubiquitous user-centric value-added vertical
             viral virtual visionary web-enabled wireless world-class
         )],
-        nouns        => [qw(
-            action-items applications architectures bandwidth channels communities
-            content convergence deliverables e-business e-commerce e-markets
+        nouns => [ qw(
+            action-item application architecture bandwidth channel community
+            content convergence deliverable e-business e-commerce e-market
+            e-service e-tailer experiences functionality infomediary
+            infrastructure initiative interface market methodology metric
+            mindshare model network niche paradigm partnership platform
+            portal relationship ROI synergy web-readiness schema solution
+            supply-chain system technology user
+        ) ],
+        nounss => [ qw(
+            action-items applications architectures channels communities
+            convergences deliverables e-businesses e-commerces e-markets
             e-services e-tailers experiences eyeballs functionalities infomediaries
             infrastructures initiatives interfaces markets methodologies metrics
-            mindshare models networks niches paradigms partnerships platforms
-            portals relationships ROI synergies web-readiness schemas solutions
+            models networks niches paradigms partnerships platforms
+            portals relationships synergies schemas solutions
             supply-chains systems technologies users vortals
-        )],
-        conj_adverbs => [qw(however moreover nevertheless consequently)],
-        conjuntors   => [qw(though although notwithstanding yet still)]
-    }, ref($self) || $self);
+        ) ],
+    }, ref($self) || $self );
 }
 
 sub _random {
     my $high = shift || 5;
     my $low  = shift || 1;
-    int( rand( $high - $low + 1 ) ) + $low;
+    return int( rand( $high - $low + 1 ) ) + $low;
 }
 
 sub words {
-    my ($self, $meta) = @_;
+    my ( $self, $meta ) = @_;
 
-    # Deal with "maybe_n/n_word" meta words
-    while ($meta =~ /maybe[_-](\d+)\/(\d+)[_-](\w+)\S*/) {
-        my $word = (_random($2, $1) == $1) ? $3 : '';
+    # deal with "maybe_n/n_word" meta words
+    while ( $meta =~ /maybe[_-](\d+)\/(\d+)[_-](\w+)\S*/ ) {
+        my $word = ( _random( $2, $1 ) == $1 ) ? $3 : '';
         if ($word) {
             $meta =~ s/maybe[_-]\d+\/\d+[_-]\w+(\S*)/$word$1/;
-        } else {
+        }
+        else {
             $meta =~ s/maybe[_-]\d+\/\d+[_-]\w+\S*\s*//;
         }
     }
 
-    # Convert "phrase" into phrase meta words
+    # convert "phrase" into phrase meta words
     $meta =~ s/(\w)\s+phrase/$1, phrase/g;
     $meta =~ s/phrase/conjuntor article noun to_be power_word/g;
 
-    while ($meta =~ /(
+    while ( $meta =~ /(
         pronoun|article|sub_conjuc|power_word|verb|aux_verb|
         adjective|noun|conj_adverb|conjuntor|sub_conjunc|adverb
-    )/x) {
-        # If the word is an adverb, we have to pick a verb and add "ing" to it.
-        # This is newbie-like code. Should get rewritten eventually.
-        my ($t1, $t2) = ($1, $1);
-        $t2 = 'verb' if ($t1 eq 'adverb');
-        my $word = $self->{$t2 . 's'}[ _random($#{$self->{$t2 . 's'}}, 0) ];
-        $word =~ s/[e]*$/ing/ if ($t1 eq 'adverb');
+    )/x ) {
+        # if the word is an adverb, we have to pick a verb and add "ing" to it
+        my ( $t1, $t2 ) = ( $1, $1 );
+        $t2 = 'verb' if ( $t1 eq 'adverb' );
+        my $word = $self->{ $t2 . 's' }[ _random( $#{ $self->{ $t2 . 's' } }, 0 ) ];
+        $word =~ s/[e]*$/ing/ if ( $t1 eq 'adverb' );
         $meta =~ s/$t1/$word/;
     }
 
-    # Convert "to_be" into the proper conjugated form
-    while ($meta =~ /\b(\w+)\s+to_be/) {
-        if ($1 =~ /ess$/) {
+    # convert "to_be" into the proper conjugated form
+    while ( $meta =~ /\b(\w+)\s+to_be/ ) {
+        if ( $1 =~ /ess$/ ) {
             $meta =~ s/to_be/is/;
-        } elsif ($1 =~ /s$/) {
+        }
+        elsif ( $1 =~ /s$/ ) {
             $meta =~ s/to_be/are/;
-        } else {
+        }
+        else {
             $meta =~ s/to_be/is/;
         }
     }
 
     $meta =~ s/^\s+|\s+$//;
-    $meta;
+    $meta =~ s/\b(a)(\s[aeiouy])/$1n$2/i;
+
+    return $meta;
 }
 
 sub sentence {
-    my ($self, $meta) = (shift, undef);
+    my ( $self, $meta ) = ( shift, undef );
     my $is_first = shift || 0;
-    my $type = _random(7, 1);
+    my $type = _random( 7, 1 );
 
-    if ($type == 1) {
-        $meta = 'article noun to_be power_word sub_conjunc pronoun power_word ' .
-                        'article maybe_1/2_adjective noun maybe_1/2_phrase';
-    } elsif ($type == 2) {
+    if ( $type == 1 ) {
+        $meta = 'article noun to_be power_word sub_conjunc pronoun verb ' .
+            'article maybe_1/2_adjective noun maybe_1/3_phrase';
+    }
+    elsif ( $type == 2 ) {
         $meta = 'sub_conjunc pronoun power_word article maybe_1/2_adjective ' .
-                        'noun, article maybe_1/2_adjective noun power_word article ' .
-                        'maybe_1/2_adjective noun maybe_1/3_phrase';
-    } elsif ($type == 3) {
+            'noun, article maybe_1/2_adjective noun power_word article ' .
+            'maybe_1/2_adjective noun maybe_1/4_phrase';
+    }
+    elsif ( $type == 3 ) {
         $meta = 'pronoun aux_verb verb article maybe_1/2_adjective noun ' .
-                        'sub_conjunc article adjective noun aux_verb verb article ' .
-                        'maybe_1/2_adjective noun maybe_1/3_phrase';
-    } elsif ($type == 4) {
+            'sub_conjunc article adjective noun aux_verb verb article ' .
+            'maybe_1/2_adjective noun maybe_1/5_phrase';
+    }
+    elsif ( $type == 4 ) {
         $meta = 'sub_conjunc pronoun verb article maybe_1/2_adjective noun, ' .
-                        'pronoun can verb article ' .
-                        'maybe_1/2_adjective noun maybe_1/3_phrase';
-    } elsif ($type == 5) {
+            'pronoun can verb article ' .
+            'maybe_1/2_adjective noun maybe_1/4_phrase';
+    }
+    elsif ( $type == 5 ) {
         $meta = 'pronoun aux_verb verb article maybe_1/2_adjective noun ' .
-                        'sub_conjunc pronoun verb article ' .
-                        'maybe_1/2_adjective noun maybe_1/4_phrase';
-    } elsif ($type == 6) {
+            'sub_conjunc pronoun verb article ' .
+            'maybe_1/2_adjective noun maybe_1/5_phrase';
+    }
+    elsif ( $type == 6 ) {
         $meta = 'article noun verbs adjective noun';
-    } elsif ($type == 7) {
-        $meta = "article noun to_be a adjective noun sub_conjuncs, sub_conjuncs " .
-                        'article noun verbs article noun';
+    }
+    elsif ( $type == 7) {
+        $meta = 'article noun to_be a adjective noun, sub_conjunc article noun verbs article noun';
     }
 
-    $meta = 'maybe_1/4_conj_adverb, ' . $meta if (not $is_first);
-
-    return ucfirst($self->words($meta)) . '.';
+    $meta = 'maybe_1/4_conj_adverb, ' . $meta if ( not $is_first );
+    return ucfirst( $self->words($meta) ) . '.';
 }
 
 sub paragraph {
-    my ($self, $low, $high) = @_;
+    my ( $self, $low, $high ) = @_;
     my $count = 0;
-    if (not defined $low) {
-        $count = _random(7, 4);
-    } elsif (not defined $high) {
+    if ( not defined $low ) {
+        $count = _random( 7, 4 );
+    }
+    elsif ( not defined $high ) {
         $count = $low;
-    } else {
-        $count = _random($high, $low);
+    }
+    else {
+        $count = _random( $high, $low );
     }
     $count--;
-    join ' ', $self->sentence(1), map { $self->sentence } (1 .. $count);
+    return join( ' ', $self->sentence(1), map { $self->sentence } ( 1 .. $count ) );
 }
 
 sub paragraphs {
     my $self = shift;
     my $count = shift || 2;
-    my ($low, $high) = @_;
-    map { $self->paragraph($low, $high) } (1 .. $count);
+    my ( $low, $high ) = @_;
+    return map { $self->paragraph( $low, $high ) } ( 1 .. $count );
 }
 
 sub bullets {
-    my ($self, $meta) = (shift, '');
+    my ( $self, $meta ) = ( shift, '' );
     my $count = shift || 5;
-    my $type = shift || _random(4, 1);
 
-    if ($type == 1) {
-        $meta = 'verb article adjective noun';
-    } elsif ($type == 2) {
-        $meta = 'power_word adjective noun';
-    } elsif ($type == 3) {
-        $meta = 'power_word adjective noun and power_word adjective noun';
-    } elsif ($type == 4) {
-        $meta = 'verb article noun power_word by article noun';
-    }
-    map { ucfirst $self->words($meta) } (1 .. $count);
+    my @bullet_forms = (
+        'power_word article adjective noun',
+        'power_word adjective noun',
+        'power_word adjective noun and power_word adjective noun',
+        'power_word article noun power_word by article noun',
+    );
+
+    return map { ucfirst $self->words( $bullet_forms[ _random( @bullet_forms - 1, 0 ) ] ) } ( 1 .. $count );
 }
 
 sub body {
-    my ($self, $params) = @_;
+    my ( $self, $params ) = @_;
 
-    $params->{p_min}  = 1  if (not exists $params->{p_min});
-    $params->{p_max}  = 3  if (not exists $params->{p_max});
-    $params->{b_freq} = 25 if (not exists $params->{b_freq});
-    $params->{b_min}  = 3  if (not exists $params->{b_min});
-    $params->{b_max}  = 6  if (not exists $params->{b_max});
+    $params->{p_min}  = 1  if ( not exists $params->{p_min}  );
+    $params->{p_max}  = 3  if ( not exists $params->{p_max}  );
+    $params->{b_freq} = 25 if ( not exists $params->{b_freq} );
+    $params->{b_min}  = 3  if ( not exists $params->{b_min}  );
+    $params->{b_max}  = 6  if ( not exists $params->{b_max}  );
 
     my @data = ();
-    my $p_count = _random($params->{p_max}, $params->{p_min});
+    my $p_count = _random( $params->{p_max}, $params->{p_min} );
 
-    foreach (1 .. $p_count) {
+    foreach ( 1 .. $p_count ) {
         push @data, {
             type => 'paragraph',
-            text => $self->paragraphs(1, $params->{p_s_min}, $params->{p_s_max})
+            text => $self->paragraphs (1, $params->{p_s_min}, $params->{p_s_max} ),
         };
 
-        # A bulletted list should never be first in a body block.
+        # a bulletted list should never be first in a body block
         if (
-            ($_ != $p_count) and
-            (_random(100, 1) < $params->{b_freq})
+            ( $_ != $p_count ) and
+            ( _random(100, 1 ) < $params->{b_freq} )
         ) {
-            my $type = _random(4, 1);
+            my $type = _random( 4, 1 );
             push @data, {
                 type => 'bullet',
-                # Must specify only 1 bullet at a time using this coding style.
-                # Probably want to rewrite this later so that we can fetch all the
-                # bullets at once, then map them into the right places.
-                text => $self->bullets(1, $type)
-            } foreach (1 .. _random($params->{b_max}, $params->{b_min}));
+                text => $self->bullets( 1, $type )
+            } foreach ( 1 .. _random( $params->{b_max}, $params->{b_min} ) );
         }
     }
 
-    \@data;
+    return \@data;
 }
 
 sub header {
-    my ($self, $meta) = (shift, '');
-    my $type = shift || _random(5, 1);
+    my ( $self, $meta ) = ( shift, '' );
+    my $type = shift || _random( 5, 1 );
 
-    # I'm not a fan of how these turn out in practice. I think the meta forms
-    # for these should get some additional attention.
-    if ($type == 1) {
-        my $subtype = _random(3, 1);
-        if ($subtype == 1) {
+    if ( $type == 1 ) {
+        my $subtype = _random( 3, 1 );
+        if ( $subtype == 1 ) {
             $meta = 'noun and noun';
-        } elsif ($subtype == 2) {
+        }
+        elsif ( $subtype == 2 ) {
             $meta = 'noun';
-        } elsif ($subtype == 3) {
+        }
+        elsif ( $subtype == 3 ) {
             $meta = 'article noun';
         }
-    } elsif ($type == 2) {
+    }
+    elsif ( $type == 2 ) {
         $meta = 'power_word noun';
-    } elsif ($type == 3) {
+    }
+    elsif ( $type == 3 ) {
         $meta = 'adverb power_word noun';
-    } elsif ($type == 4) {
+    }
+    elsif ( $type == 4 ) {
         $meta = 'adverb power_word adjective noun';
-    } elsif ($type == 5) {
+    }
+    elsif ( $type == 5 ) {
         $meta = 'power_word adjective noun adverb noun';
     }
 
-    # Capitalize every word with the exception of: of, and, or
-    join(' ', map {
-        join('-', map { ($_ !~ /^(of|and|or)$/) ? ucfirst : $_ } split('-'))
-    } split(' ', $self->words($meta)));
+    # capitalize every word with the exception of: of, and, or
+    return join( ' ', map {
+        join( '-', map { ( $_ !~ /^(of|and|or)$/ ) ? ucfirst : $_ } split('-') )
+    } split( ' ', $self->words($meta) ) );
 }
 
 sub structure {
-    my ($self, $depth, $last_push) = (shift, 1, 0);
+    my ( $self, $depth, $last_push ) = ( shift, 1, 0 );
     my $block_limit = shift || 3;
     my $depth_limit = shift || 3;
     my $mimimum_length = shift || 10;
     my @structure = ();
 
-    # Need to recursively call a function and keep some variables in scope.
-    # This section should DEFINATELY get rewritten, but I'm not smart enough.
-    my $structure = undef;
+    my $structure;
     $structure = sub {
         my $block = 0;
         while (
-            ($block < _random($block_limit, 1)) and
-            ((_random(4, 1) > 1) or ($last_push ne $depth))
+            ( $block < _random( $block_limit, 1 ) ) and
+            ( ( _random( 4, 1 ) > 1 ) or ( $last_push ne $depth ) )
             # 1/4 chance of exiting early
         ) {
-            push @structure, $depth;
+            push( @structure, $depth );
             my $last_push = $depth;
             $block++;
             if (
-                ($depth < $depth_limit) and
-                (_random(5, 1) > 1)
+                ( $depth < $depth_limit ) and
+                ( _random( 5, 1 ) > 1 )
                 # 1/5 chance of not nesting
             ) {
                 $depth++;
@@ -311,14 +326,11 @@ sub structure {
         $depth--;
     };
 
-    while (@structure < $mimimum_length) {
-        # This is commented-out to keep us from going into an infinite loop.
-        # Eventually, I think this should get recoded.
-        # @structure = ();
-        ($last_push, $depth) = (0, 1);
+    while ( @structure < $mimimum_length ) {
+        ( $last_push, $depth ) = ( 0, 1 );
         $structure->();
     }
-    @structure;
+    return @structure;
 }
 
 sub document {
@@ -326,37 +338,40 @@ sub document {
     my $structure = shift || [ $self->structure ];
     my $params = shift || undef;
 
-    [ map {
+    return [ map {
         {
             type => 'header' . $_,
             text => $self->header($_)
-        }, @{$self->body($params)}
-    } (@{$structure}) ];
+        }, @{ $self->body($params) }
+    } ( @{$structure} ) ];
 }
 
 sub to_html {
-    my ($self, $data) = @_;
-    my ($inside_list, $output) = (0, '');
+    my ( $self, $data ) = @_;
+    my ( $inside_list, $output ) = ( 0, '' );
 
-    foreach (@{$data}) {
-        if (($_->{type} ne 'bullet') and ($inside_list)) {
+    for ( @{$data} ) {
+        if ( ( $_->{type} ne 'bullet' ) and ($inside_list) ) {
             $inside_list = 0;
             $output .= "</ul>\n";
         }
-        if ($_->{type} =~ /header(\d+)/) {
+        if ( $_->{type} =~ /header(\d+)/ ) {
             $output .= '<h' . $1 . '>' . $_->{text} . '</h' . $1 . ">\n";
-        } elsif ($_->{type} eq 'paragraph') {
+        }
+        elsif ( $_->{type} eq 'paragraph' ) {
             $output .= '<p>' . $_->{text} . "</p>\n";
-        } elsif ($_->{type} eq 'bullet') {
+        }
+        elsif ( $_->{type} eq 'bullet' ) {
             my $ul = (not $inside_list) ? "<ul>\n" : '';
             $inside_list++;
             $output .= $ul . '<li>' . $_->{text} . "</li>\n";
-        } else {
+        }
+        else {
             $output .= '<pre>' . $_->{text} . "</pre>\n";
         }
     }
 
-    $output;
+    return $output;
 }
 
 1;
@@ -375,7 +390,7 @@ __END__
 =head1 SYNOPSIS
 
     use Lingua::ManagementSpeak;
-    my $ms = new Lingua::ManagementSpeak;
+    my $ms = Lingua::ManagementSpeak->new;
 
     print $ms->words(
         'pronoun article sub_conjunc power_word verb aux_verb adjective ' .
@@ -398,8 +413,8 @@ __END__
     print join(', ', $ms->structure);
     print join(', ', $ms->structure(3, 3, 5));
 
-    my $body = $ms->body;
-    my $body = $ms->body({
+    my $body_default = $ms->body;
+    my $body_custom  = $ms->body({
         p_min   => 2,
         p_max   => 4,
         p_s_min => 1,
@@ -409,8 +424,8 @@ __END__
         b_max   => 6
     });
 
-    my $document = $ms->document;
-    my $document = $ms->document(
+    my $document_default = $ms->document;
+    my $document_custom  = $ms->document(
         [ 1, 2, 2, 1, 2 ],
         {
             p_min   => 1,
@@ -423,15 +438,24 @@ __END__
         }
     );
 
-    print $ms->to_html($document);
+    print $ms->to_html($document_custom);
 
 =head1 DESCRIPTION
 
-This module generates grammatically correct, managerial-sounding text and
-full-length documents that mean absolutely nothing. It can output sentences,
+This module generates (probably) grammatically correct, managerial-sounding text
+and full-length documents that mean absolutely nothing. It can output sentences,
 paragraphs, and whole documents with embedded structure. The goal is to easily
 provide filler or lorem ipsen content that has the potential to pass as real.
 This module does for geeks what lorem ipsen does for designers.
+
+Most common cases are the need to create whole documents or just a paragraph
+with a few sentences.
+
+    $ms->document;
+    $ms->paragraph;
+
+This being said, there are methods that let you hook in at just about any
+useful level between word and document.
 
 =head1 METHODS
 
@@ -440,13 +464,13 @@ several other methods internally and returns a randomly generated document
 based on some good defaults. However, you can tap into the process at
 a variety of levels.
 
-=head2 new()
+=head2 new
 
 Simple instantiator. Nothing special.
 
     my $ms = Lingua::ManagementSpeak->new;
 
-=head2 words()
+=head2 words
 
 Using a text string of meta words, this returns a management-speak
 block of text. It parses the meta string and converts each meta word into
@@ -531,7 +555,7 @@ extra text into the meta string and it will come through as expected:
     print $ms->words('I need you to verb the adjective noun.');
     # Might return: "I need you to expedite the customized interfaces."
 
-=head2 sentence()
+=head2 sentence
 
 This returns a fully-formed sentence randomly selected from a set of
 pre-defined patterns. It accepts a true or false input. If true, the returned
@@ -546,7 +570,7 @@ there is a 1/4 change of a leading conjunctive adverb.
     # Might return:
     #   "Consequently, our mindshare engages open-source architectures."
 
-=head2 paragraph()
+=head2 paragraph
 
 This returns a paragraph with a certain number of constructed sentences.
 It accepts either two or one integers. If passed two, it returns a paragraph
@@ -559,7 +583,7 @@ passed, it returns between 4 and 7 sentences.
     print $ms->paragraph(2);    # Returns 2 sentences.
     print $ms->paragraph(2, 5); # Returns between 2 and 5 sentences.
 
-=head2 paragraphs()
+=head2 paragraphs
 
 This returns a set of paragraphs. You can optionally supply a number of
 paragraphs to return and sentence parameters like sentence count per
@@ -581,7 +605,7 @@ paragraph or a range for sentence count.
     # Returns two paragraphs, each with between one and three sentences
     my @paragraphs5 = $ms->paragraphs(2, 1, 3);
 
-=head2 bullets()
+=head2 bullets
 
 This returns a certain number of bullet items, either defined or random.
 The elements within each set of bullets will be written in parallel
@@ -594,7 +618,7 @@ There are no periods at the end of each bullet. If you want your bulletted
 lists to have periods, you have to add them yourself; but you shouldn't,
 because periods at the end of bullet items are dumb.
 
-=head2 body()
+=head2 body
 
 This will build a "body" chunk that you might find inside any given section
 of a document. It will only ever contain paragraphs and bulletted lists.
@@ -640,7 +664,7 @@ The data structure of C<$ref_to_array> might look something like this:
         }
     ]
 
-=head2 header()
+=head2 header
 
 This returns a correctly formatted (meaning most words will appear in
 upper-case) text string for use as a header. It accepts a single whole number
@@ -651,7 +675,7 @@ If no integer is given, it will randomly pick a number between 5 and 1.
     my $header = $ms->header(3);
     # Might return: "Monetizing Distributed Partnerships"
 
-=head2 structure()
+=head2 structure
 
 This returns an array of numbers, each number representing a "heading level"
 for a document structure. The purpose of this method is to build what could
@@ -664,7 +688,7 @@ C<$block_limit> is the maximum of any similar heading level within the same
 parent level. C<$depth_limit> is how deep the levels are allowed to nest.
 C<$minimum_length> is, well, the minimum length.
 
-=head2 document()
+=head2 document
 
 This is my favorite function. It builds a complete document with a structure
 and body sections containing paragraphs and bulletted lists.
@@ -703,7 +727,7 @@ The data structure of C<$ref_to_array1> might look something like this:
         }
     ]
 
-=head2 to_html()
+=head2 to_html
 
 This accepts either a C<body()> or C<document()> result and converts it into
 mostly good HTML. By mostly, I mean that you could probably parse it with
@@ -715,38 +739,6 @@ some simple regexes, but it ain't gonna validate against the W3C.
 I tossed this in here because I use this functionality a lot. If you want to
 build real web pages, you should probably use something better than this
 function.
-
-=head1 EXAMPLES
-
-This will dump out 100 sentences into a single block. Originally this module
-was a script that just did this only, and I'd cut-and-paste the text into
-the various locations I needed it.
-
-    use Text::Wrap;
-    use Lingua::ManagementSpeak;
-
-    $Text::Wrap::columns = 78;
-    my $ms = new Lingua::ManagementSpeak;
-    print wrap('', '', $ms->paragraph(100));
-
-The following will create a simplistic HTML document that contains a full
-document-length document. (Er... I mean, it will look like a real document.)
-It definately won't create beautiful HTML, but it's useful when you need to
-write a spec and put it on your bosses desk in 20 seconds.
-
-    use CGI qw(header);
-    use Lingua::ManagementSpeak;
-
-    print header;
-    my $ms = new Lingua::ManagementSpeak;
-    my $document = $ms->document;
-
-    print
-        '<html><head><title>',
-        $document->[0]{text},
-        "</title>\n</head><body>\n",
-        wrap('', '', $ms->to_html($document)),
-        "</body></html>\n";
 
 =head1 SEE ALSO
 
