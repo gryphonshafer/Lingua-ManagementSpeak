@@ -151,42 +151,30 @@ sub words {
 }
 
 sub sentence {
-    my ( $self, $meta ) = ( shift, undef );
-    my $is_first = shift || 0;
-    my $type = _random( 7, 1 );
+    my ( $self, $is_first ) = @_;
 
-    if ( $type == 1 ) {
-        $meta = 'article noun to_be power_word sub_conjunc pronoun verb ' .
-            'article maybe_1/2_adjective noun maybe_1/3_phrase';
-    }
-    elsif ( $type == 2 ) {
-        $meta = 'sub_conjunc pronoun power_word article maybe_1/2_adjective ' .
+    my @meta = (
+        'article noun to_be power_word sub_conjunc pronoun verb ' .
+            'article maybe_1/2_adjective noun maybe_1/3_phrase',
+        'sub_conjunc pronoun power_word article maybe_1/2_adjective ' .
             'noun, article maybe_1/2_adjective noun power_word article ' .
-            'maybe_1/2_adjective noun maybe_1/4_phrase';
-    }
-    elsif ( $type == 3 ) {
-        $meta = 'pronoun aux_verb verb article maybe_1/2_adjective noun ' .
+            'maybe_1/2_adjective noun maybe_1/4_phrase',
+        'pronoun aux_verb verb article maybe_1/2_adjective noun ' .
             'sub_conjunc article adjective noun aux_verb verb article ' .
-            'maybe_1/2_adjective noun maybe_1/5_phrase';
-    }
-    elsif ( $type == 4 ) {
-        $meta = 'sub_conjunc pronoun verb article maybe_1/2_adjective noun, ' .
+            'maybe_1/2_adjective noun maybe_1/5_phrase',
+        'sub_conjunc pronoun verb article maybe_1/2_adjective noun, ' .
             'pronoun can verb article ' .
-            'maybe_1/2_adjective noun maybe_1/4_phrase';
-    }
-    elsif ( $type == 5 ) {
-        $meta = 'pronoun aux_verb verb article maybe_1/2_adjective noun ' .
+            'maybe_1/2_adjective noun maybe_1/4_phrase',
+        'pronoun aux_verb verb article maybe_1/2_adjective noun ' .
             'sub_conjunc pronoun verb article ' .
-            'maybe_1/2_adjective noun maybe_1/5_phrase';
-    }
-    elsif ( $type == 6 ) {
-        $meta = 'article noun verbs adjective noun';
-    }
-    elsif ( $type == 7) {
-        $meta = 'article noun to_be a adjective noun, sub_conjunc article noun verbs article noun';
-    }
+            'maybe_1/2_adjective noun maybe_1/5_phrase',
+        'article noun verbs adjective noun',
+        'article noun to_be a adjective noun, sub_conjunc article noun verbs article noun',
+    );
 
+    my $meta = $meta[ _random( 6, 0 ) ];
     $meta = 'maybe_1/4_conj_adverb, ' . $meta if ( not $is_first );
+
     return ucfirst( $self->words($meta) ) . '.';
 }
 
@@ -262,33 +250,22 @@ sub body {
 }
 
 sub header {
-    my ( $self, $meta ) = ( shift, '' );
-    my $type = shift || _random( 5, 1 );
+    my ( $self, $level ) = @_;
 
-    if ( $type == 1 ) {
-        my $subtype = _random( 3, 1 );
-        if ( $subtype == 1 ) {
-            $meta = 'noun and noun';
-        }
-        elsif ( $subtype == 2 ) {
-            $meta = 'noun';
-        }
-        elsif ( $subtype == 3 ) {
-            $meta = 'article noun';
-        }
-    }
-    elsif ( $type == 2 ) {
-        $meta = 'power_word noun';
-    }
-    elsif ( $type == 3 ) {
-        $meta = 'adverb power_word noun';
-    }
-    elsif ( $type == 4 ) {
-        $meta = 'adverb power_word adjective noun';
-    }
-    elsif ( $type == 5 ) {
-        $meta = 'power_word adjective noun adverb noun';
-    }
+    my $meta = [
+        [
+            'noun and noun',
+            'noun',
+            'article noun',
+        ],
+        'power_word noun',
+        'adverb power_word noun',
+        'adverb power_word adjective noun',
+        'power_word adjective noun adverb noun',
+    ];
+
+    $meta = $meta->[ $level - 1 ] if ($level);
+    $meta = $meta->[ _random( @$meta - 1, 0 ) ] while ( ref($meta) );
 
     # capitalize every word with the exception of: of, and, or
     return join( ' ', map {
@@ -355,6 +332,7 @@ sub to_html {
             $inside_list = 0;
             $output .= "</ul>\n";
         }
+
         if ( $_->{type} =~ /header(\d+)/ ) {
             $output .= '<h' . $1 . '>' . $_->{text} . '</h' . $1 . ">\n";
         }
