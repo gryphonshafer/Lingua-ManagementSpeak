@@ -1,8 +1,10 @@
 package Lingua::ManagementSpeak;
+# ABSTRACT: Tool to generate managerial-sounding text and full documents
+
 use strict;
 use warnings;
 
-our $VERSION = '0.03';
+# VERSION
 
 sub new {
     my $self = shift;
@@ -358,12 +360,17 @@ sub to_html {
 }
 
 1;
+__END__
 
 =pod
 
-=head1 NAME
+=begin :badges
 
-Lingua::ManagementSpeak - Tool to generate managerial-sounding text and full documents
+=for markdown
+[![Build Status](https://travis-ci.org/gryphonshafer/Lingua-ManagementSpeak.svg)](https://travis-ci.org/gryphonshafer/Lingua-ManagementSpeak)
+[![Coverage Status](https://coveralls.io/repos/gryphonshafer/Lingua-ManagementSpeak/badge.png)](https://coveralls.io/r/gryphonshafer/Lingua-ManagementSpeak)
+
+=end :badges
 
 =head1 SYNOPSIS
 
@@ -741,15 +748,16 @@ write a spec and put it on your bosses desk in 20 seconds.
         wrap('', '', $ms->to_html($document)),
         "</body></html>\n";
 
-=head1 AUTHOR
+=head1 SEE ALSO
 
-Gryphon Shafer E<lt>gryphon@cpan.orgE<gt>.
+You can also look for additional information at:
 
-    code('Perl') || die;
-
-=head1 LICENSE
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+=for :list
+* L<GitHub|https://github.com/gryphonshafer/Lingua-ManagementSpeak>
+* L<CPAN|http://search.cpan.org/dist/Lingua-ManagementSpeak>
+* L<MetaCPAN|https://metacpan.org/pod/Lingua::ManagementSpeak>
+* L<AnnoCPAN|http://annocpan.org/dist/Lingua-ManagementSpeak>
+* L<Travis CI|https://travis-ci.org/gryphonshafer/Lingua-ManagementSpeak>
+* L<Coveralls|https://coveralls.io/r/gryphonshafer/Lingua-ManagementSpeak>
 
 =cut
