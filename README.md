@@ -4,7 +4,7 @@ Lingua::ManagementSpeak - Tool to generate managerial-sounding text and full doc
 
 # VERSION
 
-version 1.01
+version 1.02
 
 [![Build Status](https://travis-ci.org/gryphonshafer/Lingua-ManagementSpeak.svg)](https://travis-ci.org/gryphonshafer/Lingua-ManagementSpeak)
 [![Coverage Status](https://coveralls.io/repos/gryphonshafer/Lingua-ManagementSpeak/badge.png)](https://coveralls.io/r/gryphonshafer/Lingua-ManagementSpeak)
