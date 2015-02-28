@@ -729,5 +729,7 @@ You can also look for additional information at:
 * L<AnnoCPAN|http://annocpan.org/dist/Lingua-ManagementSpeak>
 * L<Travis CI|https://travis-ci.org/gryphonshafer/Lingua-ManagementSpeak>
 * L<Coveralls|https://coveralls.io/r/gryphonshafer/Lingua-ManagementSpeak>
+* L<CPANTS|http://cpants.cpanauthors.org/dist/Lingua-ManagementSpeak>
+* L<CPAN Testers|http://www.cpantesters.org/distro/L/Lingua-ManagementSpeak.html>
 
 =cut
