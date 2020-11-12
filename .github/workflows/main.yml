@@ -1,9 +1,10 @@
+name: build
 on:
   - push
   - pull_request
   - workflow_dispatch
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -35,6 +36,6 @@ jobs:
             Devel::Cover::Report::Codecov
       - run: HARNESS_PERL_SWITCHES=-MDevel::Cover prove --recurse --lib --failures --jobs 4 --timer t
       - run: cover -test -report codecov
-        if: ${{ matrix.perl-version >= 26 }}
+        if: matrix.perl-version >= 26
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
