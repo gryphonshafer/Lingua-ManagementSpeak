@@ -28,3 +28,5 @@ jobs:
             Devel::Cover::Report::Codecov
       - run: HARNESS_PERL_SWITCHES=-MDevel::Cover prove -r -l -f -j4 --timer t
       - run: cover -test -report codecov
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
