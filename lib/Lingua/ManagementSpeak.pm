@@ -361,8 +361,8 @@ __END__
 =begin :badges
 
 =for markdown
-[![Build Status](https://travis-ci.org/gryphonshafer/Lingua-ManagementSpeak.svg)](https://travis-ci.org/gryphonshafer/Lingua-ManagementSpeak)
-[![Coverage Status](https://coveralls.io/repos/gryphonshafer/Lingua-ManagementSpeak/badge.png)](https://coveralls.io/r/gryphonshafer/Lingua-ManagementSpeak)
+[![build](https://github.com/gryphonshafer/Lingua-ManagementSpeak/workflows/build/badge.svg)](https://github.com/gryphonshafer/Lingua-ManagementSpeak/actions?query=workflow%3Abuild)
+[![codecov](https://codecov.io/gh/gryphonshafer/Lingua-ManagementSpeak/graph/badge.svg)](https://codecov.io/gh/gryphonshafer/Lingua-ManagementSpeak)
 
 =end :badges
 
@@ -726,8 +726,8 @@ You can also look for additional information at:
 =for :list
 * L<GitHub|https://github.com/gryphonshafer/Lingua-ManagementSpeak>
 * L<MetaCPAN|https://metacpan.org/pod/Lingua::ManagementSpeak>
-* L<Travis CI|https://travis-ci.org/gryphonshafer/Lingua-ManagementSpeak>
-* L<Coveralls|https://coveralls.io/r/gryphonshafer/Lingua-ManagementSpeak>
+* L<GitHub Actions|https://github.com/gryphonshafer/Lingua-ManagementSpeak/actions>
+* L<Codecov|https://codecov.io/gh/gryphonshafer/Lingua-ManagementSpeak>
 * L<CPANTS|http://cpants.cpanauthors.org/dist/Lingua-ManagementSpeak>
 * L<CPAN Testers|http://www.cpantesters.org/distro/L/Lingua-ManagementSpeak.html>
 
