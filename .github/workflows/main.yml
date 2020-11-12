@@ -30,4 +30,4 @@ jobs:
       - run: cover -test -report codecov
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        if: matrix.perl-version == "5.30"
+        if: ${{ matrix.perl-version == "5.30" }}
