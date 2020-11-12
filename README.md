@@ -6,15 +6,8 @@ Lingua::ManagementSpeak - Tool to generate managerial-sounding text and full doc
 
 version 1.03
 
-[![Build Status](https://travis-ci.org/gryphonshafer/Lingua-ManagementSpeak.svg)](https://travis-ci.org/gryphonshafer/Lingua-ManagementSpeak)
-[![Coverage Status](https://coveralls.io/repos/gryphonshafer/Lingua-ManagementSpeak/badge.png)](https://coveralls.io/r/gryphonshafer/Lingua-ManagementSpeak)
-
 [![build](https://github.com/gryphonshafer/Lingua-ManagementSpeak/workflows/build/badge.svg)](https://github.com/gryphonshafer/Lingua-ManagementSpeak/actions?query=workflow%3Abuild)
 [![codecov](https://codecov.io/gh/gryphonshafer/Lingua-ManagementSpeak/graph/badge.svg)](https://codecov.io/gh/gryphonshafer/Lingua-ManagementSpeak)
-
-[![Build Status](https://github.com/gryphonshafer/Lingua-ManagementSpeak/workflows/build/badge.svg)](https://github.com/gryphonshafer/Lingua-ManagementSpeak/actions?query=workflow%3Abuild)
-[![Coverage Status](https://codecov.io/gh/gryphonshafer/Lingua-ManagementSpeak/graph/badge.svg)](https://codecov.io/gh/gryphonshafer/Lingua-ManagementSpeak)
-
 
 # SYNOPSIS
 
@@ -370,11 +363,9 @@ function.
 You can also look for additional information at:
 
 - [GitHub](https://github.com/gryphonshafer/Lingua-ManagementSpeak)
-- [CPAN](http://search.cpan.org/dist/Lingua-ManagementSpeak)
 - [MetaCPAN](https://metacpan.org/pod/Lingua::ManagementSpeak)
-- [AnnoCPAN](http://annocpan.org/dist/Lingua-ManagementSpeak)
-- [Travis CI](https://travis-ci.org/gryphonshafer/Lingua-ManagementSpeak)
-- [Coveralls](https://coveralls.io/r/gryphonshafer/Lingua-ManagementSpeak)
+- [GitHub Actions](https://github.com/gryphonshafer/Lingua-ManagementSpeak/actions)
+- [Codecov](https://codecov.io/gh/gryphonshafer/Lingua-ManagementSpeak)
 - [CPANTS](http://cpants.cpanauthors.org/dist/Lingua-ManagementSpeak)
 - [CPAN Testers](http://www.cpantesters.org/distro/L/Lingua-ManagementSpeak.html)
 
@@ -384,7 +375,7 @@ Gryphon Shafer <gryphon@cpan.org>
 
 # COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2018 by Gryphon Shafer.
+This software is copyright (c) 2021 by Gryphon Shafer.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
