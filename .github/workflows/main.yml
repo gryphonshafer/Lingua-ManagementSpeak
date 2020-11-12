@@ -4,13 +4,13 @@ on:
   - workflow_dispatch
 jobs:
   test:
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         perl-version:
           - "5.30"
           - "5.14"
-    runs-on: ubuntu-latest
     container:
       image: perldocker/perl-tester:${{ matrix.perl-version }}
     steps:
@@ -30,3 +30,4 @@ jobs:
       - run: cover -test -report codecov
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        if: matrix.perl-version == "5.30"
