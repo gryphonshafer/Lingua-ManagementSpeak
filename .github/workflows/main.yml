@@ -9,26 +9,25 @@ jobs:
       fail-fast: false
       matrix:
         perl-version:
-          - "5.30"
-          - "5.14"
+          - '5.30'
+          - '5.20'
+          - '5.14'
+          - '5.8'
+          - '5.6'
     container:
       image: perldocker/perl-tester:${{ matrix.perl-version }}
     steps:
       - uses: actions/checkout@v2
       - uses: perl-actions/install-with-cpanm@v1
         env:
-          PERL_CPANM_OPT: "--from https://cpan.metacpan.org/ --quiet --notest --force --skip-satisfied"
+          PERL_CPANM_OPT: --from https://cpan.metacpan.org/ --quiet --notest --force --skip-satisfied
         with:
           sudo: false
           args: --with-develop --with-all-features --installdeps .
           install: |
-            Test::Pod
-            Test::Pod::Coverage
-            Test::CheckManifest
             Devel::Cover::Report::Codecov
       - run: HARNESS_PERL_SWITCHES=-MDevel::Cover prove -r -l -f -j4 --timer t
-      - name: coverage
-        if: ${{ matrix.perl-version == '5.30' }}
-        run: cover -test -report codecov
+      - run: cover -test -report codecov
+        # if: ${{ matrix.perl-version == '5.30' }}
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
