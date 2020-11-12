@@ -22,8 +22,8 @@ jobs:
       - uses: perl-actions/install-with-cpanm@v1
         env:
           PERL_CPANM_OPT: "--from https://cpan.metacpan.org/ --quiet --notest --force --skip-satisfied"
-        args: --with-develop --with-all-features --installdeps .
         with:
+          args: --with-develop --with-all-features --installdeps .
           install: |
             Test::Pod
             Test::Pod::Coverage
