@@ -10,11 +10,7 @@ jobs:
         perl-version:
           - "5.30"
           - "5.14"
-        os:
-          - ubuntu-latest
-          - windows-latest
-          - macOS-latest
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     container:
       image: perldocker/perl-tester:${{ matrix.perl-version }}
     steps:
