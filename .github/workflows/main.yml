@@ -9,7 +9,6 @@ jobs:
       fail-fast: false
       matrix:
         perl-version:
-          - 33
           - 32
           - 30
           - 28
@@ -22,8 +21,6 @@ jobs:
           - 14
           - 12
           - 10
-          - 8
-          - 6
     container:
       image: perldocker/perl-tester:5.${{ matrix.perl-version }}
     steps:
