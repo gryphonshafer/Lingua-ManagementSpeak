@@ -1,0 +1,33 @@
+on:
+  - push
+  - pull_request
+  - workflow_dispatch
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        perl-version:
+          - 5.30
+          - 5.14
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macOS-latest
+    runs-on: ${{ matrix.os }}
+    container:
+      image: perldocker/perl-tester:${{ matrix.perl-version }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: perl-actions/install-with-cpanm@v1
+        env:
+          PERL_CPANM_OPT: "--from https://cpan.metacpan.org/ --quiet --notest --force --skip-satisfied"
+        args: --with-develop --with-all-features --installdeps .
+        with:
+          install: |
+            Test::Pod
+            Test::Pod::Coverage
+            Test::CheckManifest
+            Devel::Cover::Report::Codecov
+      - run: HARNESS_PERL_SWITCHES=-MDevel::Cover prove -r -l -f -j4 --timer t
+      - run: cover -test -report codecov
