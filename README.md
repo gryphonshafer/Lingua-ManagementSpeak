@@ -4,7 +4,7 @@ Lingua::ManagementSpeak - Tool to generate managerial-sounding text and full doc
 
 # VERSION
 
-version 1.03
+version 1.04
 
 [![test](https://github.com/gryphonshafer/Lingua-ManagementSpeak/workflows/test/badge.svg)](https://github.com/gryphonshafer/Lingua-ManagementSpeak/actions?query=workflow%3Atest)
 [![codecov](https://codecov.io/gh/gryphonshafer/Lingua-ManagementSpeak/graph/badge.svg)](https://codecov.io/gh/gryphonshafer/Lingua-ManagementSpeak)
@@ -375,7 +375,7 @@ Gryphon Shafer <gryphon@cpan.org>
 
 # COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2014-2021 by Gryphon Shafer.
+This software is Copyright (c) 2014-2050 by Gryphon Shafer.
 
 This is free software, licensed under:
 
