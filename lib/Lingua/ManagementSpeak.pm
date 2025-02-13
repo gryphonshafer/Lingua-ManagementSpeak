@@ -1,7 +1,7 @@
 package Lingua::ManagementSpeak;
 # ABSTRACT: Tool to generate managerial-sounding text and full documents
 
-use 5.008;
+use 5.010;
 use strict;
 use warnings;
 
