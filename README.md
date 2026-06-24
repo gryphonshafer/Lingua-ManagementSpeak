@@ -4,7 +4,7 @@ Lingua::ManagementSpeak - Tool to generate managerial-sounding text and full doc
 
 # VERSION
 
-version 1.06
+version 1.07
 
 [![test](https://github.com/gryphonshafer/Lingua-ManagementSpeak/workflows/test/badge.svg)](https://github.com/gryphonshafer/Lingua-ManagementSpeak/actions?query=workflow%3Atest)
 [![codecov](https://codecov.io/gh/gryphonshafer/Lingua-ManagementSpeak/graph/badge.svg)](https://codecov.io/gh/gryphonshafer/Lingua-ManagementSpeak)
@@ -371,7 +371,7 @@ You can also look for additional information at:
 
 # AUTHOR
 
-Gryphon Shafer <gryphon@cpan.org>
+Gryphon Shafer <gryphon@goldenguru.com>
 
 # COPYRIGHT AND LICENSE
 
